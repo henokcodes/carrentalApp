@@ -16,6 +16,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jms.annotation.EnableJms;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -23,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 @EnableJms
+@EnableScheduling
 @SpringBootApplication
 public class CarrentalApplication implements CommandLineRunner {
 
@@ -50,61 +53,63 @@ public class CarrentalApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		RestTemplate restTemplate = new RestTemplate();
 
-		System.out.println("All Cars");
+
+//		CustomerDTO customerDTO = new CustomerDTO("123","Julie", "julie@domain.com");
+//
+//		String type = "Van";
+//		String brand = "Toyota";
+//
+//		Car carToRent = reservationService.getCarByBrandAndType(brand, type);
+//
+//		ReservationDTO reservationDTO = new ReservationDTO(customerDTO.getCustomerNumber(), carToRent.getLicensePlate(), LocalDate.now(), LocalDate.of(2023,03,20));
+//		BorrowDTO borrowDTO = new BorrowDTO(reservationDTO.getCustomerNumber(), reservationDTO.getCarLicensePlate(), LocalDate.now(), LocalDate.of(2023,03,20), carToRent.getPrice(), 2345,false);
+//		customerRepository.save(customerAdapter.getCustomer(customerDTO));
+//		reservationService.addReservation(reservationDTO);
+//
+//		borrowRepository.save(borrowAdapter.getBorrow(borrowDTO));
+//
+//		System.out.println("Customers found with findAll():");
+//		System.out.println("-------------------------------");
+//		for (Customer customer : customerRepository.findAll()) {
+//			System.out.println(customer.toString());
+//		}
+//		System.out.println("Reservations");
+//		// print reservations
+//		for (Reservation reservation : reservationRepository.findAll()) {
+//			System.out.println(reservation.toString());
+//		}
+//		System.out.println("Borrows");
+//		// print borrows
+//		for (Borrow borrow : borrowRepository.findAll()) {
+//			System.out.println(borrow.toString());
+//		}
+
+Schedule();
+
+	}
+
+	@Scheduled(fixedRate = 20000)
+	public  void Schedule() {
+
+		RestTemplate restTemplate = new RestTemplate();
 		Cars res = restTemplate.getForObject(
 				serverUrl,
 				Cars.class);
 		List<Car> cars = res.getCars();
-		System.out.println(cars.get(1));
+		System.out.println("********** Available Cars ***********");
+		System.out.println(cars.size() + " Cars found");
 
+		// print cars
 
-		System.out.println("Car with license plate GHT134 ");
-		Object toyotaCars = restTemplate.getForObject(serverUrl+"/GHT134", Car.class);
-		System.out.println(toyotaCars);
-
-		CustomerDTO customerDTO = new CustomerDTO("123","Julie", "julie@domain.com");
-
-		String type = "Van";
-		String brand = "Hyundai";
-		System.out.println("Car with brand Hyundai");
-
-		Cars resp = restTemplate.getForObject(
-				serverUrl+"/search?brand="+brand+"&type="+type,
-				Cars.class);
-		List<Car> hCars = resp.getCars();
-		System.out.println(hCars.size());
-
-		if (hCars.size()<){
-			System.out.println("Less than 3 cars found");
-
+		for (Car car : cars) {
+			System.out.println(car.toString());
 		}
 
-		Car carToRent = hCars.get(0);
 
-		ReservationDTO reservationDTO = new ReservationDTO(customerDTO.getCustomerNumber(), carToRent.getLicensePlate(), LocalDate.now(), LocalDate.of(2023,03,20));
-		BorrowDTO borrowDTO = new BorrowDTO(reservationDTO.getCustomerNumber(), reservationDTO.getCarLicensePlate(), LocalDate.now(), LocalDate.of(2023,03,20), carToRent.getPrice(), 2345);
-		customerRepository.save(customerAdapter.getCustomer(customerDTO));
-		reservationService.addReservation(reservationDTO);
-//		reservationRepository.save(reservationAdapter.getReservation(reservationDTO));
-		borrowRepository.save(borrowAdapter.getBorrow(borrowDTO));
+		System.out.println();
 
-		System.out.println("Customers found with findAll():");
-		System.out.println("-------------------------------");
-		for (Customer customer : customerRepository.findAll()) {
-			System.out.println(customer.toString());
-		}
-		System.out.println("Reservations");
-		// print reservations
-		for (Reservation reservation : reservationRepository.findAll()) {
-			System.out.println(reservation.toString());
-		}
-		System.out.println("Borrows");
-		// print borrows
-		for (Borrow borrow : borrowRepository.findAll()) {
-			System.out.println(borrow.toString());
-		}
+
 
 	}
 }

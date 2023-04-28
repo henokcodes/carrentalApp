@@ -6,6 +6,7 @@ import com.henokcodes.carrental.Dto.CustomerDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -20,14 +21,14 @@ public class CustomerAdapter {
         Customer customer = new Customer(customerDTO.getCustomerNumber(), customerDTO.getName(), customerDTO.getEmail());
          return customer;
     }
-    public List<Customer> getAllCustomers(List<CustomerDTO> customerDTOS){
+    public Collection<Customer> getAllCustomers(Collection<CustomerDTO> customerDTOS){
            List<Customer> customers = new ArrayList<>();
             for (CustomerDTO customerDTO : customerDTOS) {
                 customers.add(getCustomer(customerDTO));
             }
             return customers;
     }
-    public List<CustomerDTO> getAllCustomerDTOs(List<Customer> customers){
+    public Collection<CustomerDTO> getAllCustomerDTOs(Collection<Customer> customers){
 
         List<CustomerDTO> customerDTOS = new ArrayList<>();
         for (Customer customer : customers) {

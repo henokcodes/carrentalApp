@@ -2,8 +2,11 @@ package com.henokcodes.carrental.controller;
 
 
 import com.henokcodes.carrental.Dto.CustomerDTO;
+import com.henokcodes.carrental.Dto.Customers;
 import com.henokcodes.carrental.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,34 +19,34 @@ public class CustomerController {
     private CustomerService customerService;
     //get all cars
     @GetMapping
-    public List<CustomerDTO> getAllCustomers(){
-        return customerService.getAllCustomers();
+    public ResponseEntity<?> getAllCustomers(){
+        return new ResponseEntity<Customers>( customerService.getAllCustomers(), HttpStatus.OK);
     }
     // get customer by customerNumber
     @GetMapping("/{customerNumber}")
-    public CustomerDTO getCustomerByCustomerNumber(@PathVariable String customerNumber){
-        return customerService.getCustomerByCustomerNumber(customerNumber);
+    public ResponseEntity<?> getCustomerByCustomerNumber(@PathVariable String customerNumber){
+        return new ResponseEntity<CustomerDTO>( customerService.getCustomerByCustomerNumber(customerNumber), HttpStatus.OK);
     }
     //search customer
     @GetMapping("/search")
-    public List<CustomerDTO> getCustomerByKey(@RequestParam String key, @RequestParam String value){
+    public ResponseEntity<?> getCustomerByKey(@RequestParam String key, @RequestParam String value){
         if(key.equals("name"))
-        return customerService.getCustomersByName(value);
+        return new ResponseEntity<Customers>(customerService.getCustomersByName(value), HttpStatus.OK);
         else if(key.equals("email"))
-        return customerService.getCustomersByEmail(value);
-        else return null;
+        return new ResponseEntity<Customers>(customerService.getCustomersByEmail(value),  HttpStatus.OK);
+        else return new ResponseEntity<String>("Invalid key",  HttpStatus.OK);
     }
 
     //add customer
     @PostMapping
-    public CustomerDTO addCustomer(@RequestBody CustomerDTO customerDTO){
-        return customerService.addCustomer(customerDTO);
+    public ResponseEntity<?> addCustomer(@RequestBody CustomerDTO customerDTO){
+        return new ResponseEntity<CustomerDTO>(customerService.addCustomer(customerDTO), HttpStatus.CREATED);
     }
 
     //update customer
     @PutMapping
-    public CustomerDTO updateCustomer(@RequestBody CustomerDTO customerDTO){
-        return customerService.updateCustomer(customerDTO);
+    public ResponseEntity<?> updateCustomer(@RequestBody CustomerDTO customerDTO){
+        return  new ResponseEntity<CustomerDTO>(customerService.updateCustomer(customerDTO), HttpStatus.OK);
     }
     //remove customer
     @DeleteMapping("/{customerNumber}")

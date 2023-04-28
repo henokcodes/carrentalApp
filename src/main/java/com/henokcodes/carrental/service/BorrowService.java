@@ -5,6 +5,7 @@ package com.henokcodes.carrental.service;
 
 import com.henokcodes.carrental.Domain.Borrow;
 import com.henokcodes.carrental.Dto.BorrowDTO;
+import com.henokcodes.carrental.Dto.Borrows;
 import com.henokcodes.carrental.adapter.BorrowAdapter;
 
 import com.henokcodes.carrental.repository.BorrowRepository;
@@ -12,10 +13,15 @@ import com.henokcodes.carrental.repository.BorrowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class BorrowService {
+
+    //add logger
+    Logger logger = Logger.getLogger(BorrowService.class.getName());
 
     @Autowired
     private BorrowRepository borrowRepository;
@@ -27,12 +33,14 @@ public class BorrowService {
 
         Borrow borrow = borrowAdapter.getBorrow(borrowDTO);
         borrowRepository.save(borrow);
+        logger.info("Borrow added");
         return borrowDTO;
     }
 
     //remove borrow
     public void removeBorrow(String customerNumber, String carLicensePlate){
         Borrow borrow = borrowRepository.findByCustomerNumberAndCarLicensePlate(customerNumber, carLicensePlate);
+        logger.info("Borrow removed");
         borrowRepository.delete(borrow);
     }
     //update borrow
@@ -41,23 +49,27 @@ public class BorrowService {
         borrow.setPickupDate(borrowDTO.getPickupDate());
         borrow.setReturnDate(borrowDTO.getReturnDate());
         borrowRepository.save(borrow);
+        logger.info("Borrow updated");
         return borrowDTO;
     }
 
 
 
     //get all borrows
-    public List<BorrowDTO> getAllBorrows(){
-        List<Borrow> borrows =  borrowRepository.findAll();
-        System.out.println(borrows);
-        List<BorrowDTO> borrowDTOs = (List<BorrowDTO>) borrowAdapter.getAllBorrowDTOs(borrows);
-        return borrowDTOs;
+    public Borrows getAllBorrows(){
+        Collection<Borrow> borrows =  borrowRepository.findAll();
+        Collection<BorrowDTO> borrowDTOs = borrowAdapter.getAllBorrowDTOs(borrows);
+        Borrows allBorrows = new Borrows(borrowDTOs);
+        logger.info("All borrows returned");
+        return allBorrows;
     }
     // get borrow by customerNumber
-    public List<BorrowDTO> getAllBorrowsByCustomerNumber(String customerNumber){
-        List<Borrow> borrows = borrowRepository.findByCustomerNumber(customerNumber);
-        List<BorrowDTO> borrowDTOs = borrowAdapter.getAllBorrowDTOs(borrows);
-        return borrowDTOs;
+    public Borrows getAllBorrowsByCustomerNumber(String customerNumber){
+        Collection<Borrow> borrows = borrowRepository.findByCustomerNumber(customerNumber);
+        Collection<BorrowDTO> borrowDTOs = borrowAdapter.getAllBorrowDTOs(borrows);
+        Borrows allBorrows = new Borrows(borrowDTOs);
+        logger.info("All borrows by customer number returned");
+        return allBorrows;
     }
 
 

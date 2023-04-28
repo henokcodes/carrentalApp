@@ -16,8 +16,18 @@ public class BorrowDTO {
     private LocalDate pickupDate;
     private LocalDate returnDate;
     private long price;
-//    private boolean isPaid;
     private int cardEndingNumber;
+    private boolean isPaid;
+
+    public BorrowDTO(String customerNumber, String carLicensePlate, LocalDate pickupDate, LocalDate returnDate, long price, int cardEndingNumber) {
+        super();
+        this.customerNumber = customerNumber;
+        this.carLicensePlate = carLicensePlate;
+        this.pickupDate = pickupDate;
+        this.returnDate = returnDate;
+        this.price = price;
+        this.cardEndingNumber = cardEndingNumber;
+    }
 
 
 

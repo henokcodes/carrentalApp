@@ -7,6 +7,7 @@ import com.henokcodes.carrental.Dto.ReservationDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -22,17 +23,17 @@ public class ReservationAdapter {
          return reservation;
     }
     //get all reservations from all ReservationDTOs
-    public List<Reservation> getAllReservations(List<ReservationDTO> reservationDTOs){
-           List<Reservation> reservations = new ArrayList<>();
+    public Collection<Reservation> getAllReservations(Collection<ReservationDTO> reservationDTOs){
+           Collection<Reservation> reservations = new ArrayList<>();
             for (ReservationDTO reservationDTO : reservationDTOs) {
                 reservations.add(getReservation(reservationDTO));
             }
             return reservations;
     }
     //get all ReservationDTOs from all reservations
-    public List<ReservationDTO> getAllReservationDTOs(List<Reservation> reservations){
+    public Collection<ReservationDTO> getAllReservationDTOs(Collection<Reservation> reservations){
 
-        List<ReservationDTO> reservationDTOs = new ArrayList<>();
+        Collection<ReservationDTO> reservationDTOs = new ArrayList<>();
         for (Reservation reservation : reservations) {
             reservationDTOs.add(getReservationDTO(reservation));
         }

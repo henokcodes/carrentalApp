@@ -8,6 +8,7 @@ public class Car {
 	private String color;
 	private long price;
 
+
 	public Car() {
 
 	}

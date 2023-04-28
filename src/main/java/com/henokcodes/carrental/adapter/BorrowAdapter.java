@@ -10,6 +10,7 @@ import com.henokcodes.carrental.Dto.ReservationDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -25,7 +26,7 @@ public class BorrowAdapter {
     }
 
     //get all borrows from all borrowDTOs
-    public List<Borrow> getAllBorrows(List<BorrowDTO> borrowDTOS){
+    public Collection<Borrow> getAllBorrows(Collection<BorrowDTO> borrowDTOS){
         List<Borrow> borrows = new ArrayList<>();
         for (BorrowDTO borrowDTO : borrowDTOS) {
             borrows.add(getBorrow(borrowDTO));
@@ -33,7 +34,7 @@ public class BorrowAdapter {
         return borrows;
     }
     //get all BorrowDTOs from all borrows
-    public List<BorrowDTO> getAllBorrowDTOs(List<Borrow> borrows){
+    public Collection<BorrowDTO> getAllBorrowDTOs(Collection<Borrow> borrows){
 
         List<BorrowDTO> borrowDTOS = new ArrayList<>();
         for (Borrow borrow : borrows) {
